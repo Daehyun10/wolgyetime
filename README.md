@@ -128,7 +128,7 @@ frontend/
 
 | 이름 | 역할 | GitHub |
 | --- | --- | --- |
-| **김대현** | Frontend & Backend System | [@Daehyun10](https://github.com/Daehyun10) |
+| **김대현** | Frontend & Backend Develop | [@Daehyun10](https://github.com/Daehyun10) |
 | **Claude** | Frontend Code Review  | Anthropic |
 | **Manus**   | Frontend Code Review | Manus 
 
