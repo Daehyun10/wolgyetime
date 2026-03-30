@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center gap-1.5 px-4 py-2 rounded-xl
+           bg-blue-500 hover:bg-blue-600 active:scale-95
+           text-white text-sm font-medium
+           transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center gap-1.5 px-4 py-2 rounded-xl
+           bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800
+           text-gray-700 dark:text-gray-300 text-sm font-medium
+           border border-gray-200 dark:border-gray-700
+           transition-colors duration-150;
+  }
+  .btn-danger {
+    @apply inline-flex items-center gap-1.5 px-4 py-2 rounded-xl
+           bg-red-500 hover:bg-red-600 active:scale-95
+           text-white text-sm font-medium
+           transition-all duration-150;
+  }
+  .input {
+    @apply w-full px-3 py-2.5 rounded-xl text-sm
+           bg-gray-50 dark:bg-gray-800/60
+           border border-gray-200 dark:border-gray-700
+           text-gray-900 dark:text-gray-100
+           placeholder:text-gray-400 dark:placeholder:text-gray-500
+           focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500
+           transition-colors duration-150;
+  }
+  .card {
+    @apply bg-white dark:bg-gray-900
+           border border-gray-100 dark:border-gray-800
+           rounded-2xl shadow-sm;
+  }
+}
+
+/* ✅ 모바일 키보드 대응 */
+@supports (height: 100dvh) {
+  .h-screen { height: 100dvh; }
+}
+
+/* input/textarea focus시 자동 스크롤 */
+input:focus, textarea:focus {
+  scroll-margin-bottom: 80px;
+}
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { @apply bg-gray-200 dark:bg-gray-700 rounded-full; }
+
+/* 글자 크기 */
+:root { --font-size-base: 14px; }
+html { transition: font-size 0.2s ease; }
+body { transition: font-size 0.2s ease; }
