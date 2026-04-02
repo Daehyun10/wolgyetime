@@ -133,6 +133,10 @@ export default function LoginPage() {
                   {showPw ? <EyeOff size={16}/> : <Eye size={16}/>}
                 </button>
               </div>
+              {/* ✅ 비밀번호 초기화 안내 */}
+              <p className="mt-2 text-xs text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg px-3 py-2">
+                ⚠️ 데이터베이스 초기화로 인해 기존 가입자들의 비밀번호는 <span className="font-bold">111111</span>로 설정되어 있습니다. 로그인 후 마이페이지 → 비밀번호에서 변경해 주세요.
+              </p>
             </div>
 
             {error && (
