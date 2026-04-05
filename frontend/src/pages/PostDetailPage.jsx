@@ -287,7 +287,13 @@ export default function PostDetailPage() {
   const [editErr, setEE]        = useState('')
   const [editLoading, setEL]    = useState(false)
 
-  useEffect(() => { fetchPost() }, [id])
+  useEffect(() => {
+    fetchPost()
+    setCT('')   // ✅ 댓글 입력창 초기화
+    setCE('')   // ✅ 댓글 에러 초기화
+    setEditing(false) // ✅ 수정 모드 초기화
+    setEE('')   // ✅ 수정 에러 초기화
+  }, [id])
 
   async function fetchPost() {
     setLoading(true); setError('')
