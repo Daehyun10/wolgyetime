@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import useAuthStore     from './store/authStore'
 import useSettingsStore from './store/settingsStore'
 import Layout           from './components/layout/Layout'
@@ -14,14 +14,10 @@ import MealPage         from './pages/MealPage'
 import MyPage           from './pages/MyPage'
 import NotFoundPage     from './pages/NotFoundPage'
 import PWAManager       from './components/PWAManager'
-
-// ────────────────────────────────────────────────
-// 🔧 점검 모드 — true 로 바꾸면 관리자 외 전원 차단
-// ────────────────────────────────────────────────
-const MAINTENANCE_MODE = false
+import api              from './lib/api'
 
 function MaintenancePage() {
-  const user = useAuthStore(s => s.user)
+  const user   = useAuthStore(s => s.user)
   const logout = useAuthStore(s => s.logout)
   return (
     <div style={{
@@ -69,15 +65,30 @@ function GuestOnly({ children }) {
   const token = useAuthStore(s => s.token)
   return !token ? children : <Navigate to="/" replace/>
 }
-function RequireMaintenance({ children }) {
+function RequireMaintenance({ children, maintenance }) {
   const user = useAuthStore(s => s.user)
-  if (MAINTENANCE_MODE && user?.role !== 'admin') return <MaintenancePage/>
+  // ✅ 점검 중이고 관리자가 아니면 점검 페이지 표시
+  if (maintenance && user?.role !== 'admin') return <MaintenancePage/>
   return children
 }
 
 export default function App() {
   const init = useSettingsStore(s => s.init)
-  useEffect(() => { init() }, [])
+  // ✅ 점검 모드 상태를 API에서 가져옴
+  const [maintenance, setMaintenance] = useState(false)
+  const [maintenanceLoaded, setMaintenanceLoaded] = useState(false)
+
+  useEffect(() => {
+    init()
+    // ✅ 백엔드에서 점검 모드 상태 조회
+    api.get('/maintenance')
+      .then(r => setMaintenance(!!r.data.maintenance))
+      .catch(() => setMaintenance(false))
+      .finally(() => setMaintenanceLoaded(true))
+  }, [])
+
+  // ✅ 점검 모드 로딩 중엔 아무것도 렌더링하지 않음 (깜빡임 방지)
+  if (!maintenanceLoaded) return null
 
   return (
     <>
@@ -86,7 +97,13 @@ export default function App() {
         <Route path="/login"    element={<GuestOnly><LoginPage/></GuestOnly>}/>
         <Route path="/register" element={<GuestOnly><RegisterPage/></GuestOnly>}/>
 
-        <Route path="/" element={<RequireAuth><RequireMaintenance><Layout/></RequireMaintenance></RequireAuth>}>
+        <Route path="/" element={
+          <RequireAuth>
+            <RequireMaintenance maintenance={maintenance}>
+              <Layout/>
+            </RequireMaintenance>
+          </RequireAuth>
+        }>
           <Route index                 element={<BoardPage/>}/>
           <Route path="board/:id"      element={<BoardPage/>}/>
           <Route path="post/:id"       element={<PostDetailPage/>}/>
