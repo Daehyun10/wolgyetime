@@ -1,8 +1,6 @@
 # 월계고 커뮤니티 (Wolgye Community)
 
 > 월계고등학교 전용 익명 커뮤니티
-> **접속 주소**: [https://wolgyetime.vercel.app](https://wolgyetime.vercel.app)
-
 ---
 
 ## 서비스 소개
